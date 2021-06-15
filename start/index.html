@@ -31,17 +31,34 @@
 
 <body>
     <div id="app" class="container">
-        <h1>Kitten-Off</h1>
-        <div class="post">
-            <div id="voteCounter">
-                <span @click="increment">+</span>
-                <span @click="decrement">-</span>
-                <p class="votes">Votes: {{votes}}</p>
+        <h1>Kitten-Off <span class='heading-span'><img class="logo-img" src="cat-solid.svg" width="32"></span></h1>
+        <h2>Vote for your favourite kitten!</h2>
+
+        <div class="post-wrapper">
+            <div v-for="post in sorted_posts" class="post">
+                <div class="post-inner">
+                    <div class="image-wrapper"><img :src="post.url" :alt="post.alt" width="286"></div>
+                    <div id="voteCounter">
+                        <button class="btn-votes minus" @click="decrement(post)">-</button>
+                        <button class="btn-votes plus" @click="increment(post)">+</button>
+                        <p class="votes">Votes: {{post.votes}}</p>
+                    </div>
+                    <div class="post-info">
+                        <h3>{{post.name}}</h3>
+                        <p>{{post.description}}</p>
+                    </div>
+                </div>
             </div>
-            <div><img :src="thumbnail" :alt="alt"></div>
-            <div class="post-info">
-                <h3>{{title}}</h3>
-                <p>{{summary}}</p>
+        </div>
+
+        <div class="form">
+            <h2 class="form-heading">Or add a kitten of your own!</h2>
+            <div class="form-group"><label for="name">Kitten name: </label><input id="name" type="text" v-model="newName"></div>
+            <div class="form-group"><label for="description">Kitten description: </label><input id="description" type="text" v-model="newDescription" v-on:keypress.enter="createKitten"></div>
+
+            <button @click="createKitten">Add Kitten</button>
+            <div class="error-wrapper">
+                <span v-show="error" class="error">Oops! Kittens need a name and a description.</span>
             </div>
         </div>
     </div>
